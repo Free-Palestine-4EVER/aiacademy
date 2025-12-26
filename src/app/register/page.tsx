@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
@@ -21,7 +21,7 @@ interface ProfileData {
     device: 'phone' | 'pc' | 'both';
 }
 
-export default function RegisterPage() {
+function RegisterContent() {
     const { language, setLanguage, isRTL } = useLanguage();
     const { registerWithEmail, signInWithGoogle, user } = useAuth();
     const router = useRouter();
@@ -565,5 +565,17 @@ export default function RegisterPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function RegisterPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+        }>
+            <RegisterContent />
+        </Suspense>
     );
 }
